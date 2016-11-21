@@ -67,17 +67,17 @@ define download_file(
 ) {
 
   if "x${destination_file}x" == 'xx' {
-    $filename = regsubst($url, '^http.*\/([^\/]+)$', '\1')
+    $filename            = regsubst($url, '^http.*\/([^\/]+)$', '\1')
+    $powershell_filename = regsubst($url, '^(.*\/)(.+?)(?:\.[^\.]*$|$)$', '\2')
   } else {
-    $filename = $destination_file
+    $filename            = $destination_file
+	$powershell_filename = $destination_file
   }
 
   if $timeout {
     validate_integer($timeout)
     Exec { timeout => $timeout }
   }
-
-  $powershell_filename = regsubst($url, '^(.*\/)(.+?)(?:\.[^\.]*$|$)$', '\2')
 
   validate_re($url, '.+')
   validate_re($destination_directory, '.+')
